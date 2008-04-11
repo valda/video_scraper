@@ -12,7 +12,7 @@ Supported sites
 
 * Youtube
 * Niconico Douga
-* Vision
+* Ameba Vision
 * Daily Motion
 * Veoh
 * YourFileHost
