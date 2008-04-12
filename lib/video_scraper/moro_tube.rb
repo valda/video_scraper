@@ -2,30 +2,32 @@ require 'video_scraper'
 require 'open-uri'
 require 'hpricot'
 require 'cgi'
+require 'uri'
 
 module VideoScraper
   class MoroTube
     attr_reader :request_url, :response_body, :title, :video_url, :thumb_url, :author, :duration, :page_url, :embed_tag
-    
+
     def initialize(opt)
       @opt = opt.is_a?(String) ? { :url => opt } : opt
       do_query
     end
-    
+
     def self.valid_url?(url)
       url =~ %r|\Ahttp://www\.morotube\.com/watch\.php\?clip=[[:alnum:]]{8}|
     end
-    
+
     private
     def do_query
       url = @opt[:url]
-      raise StandardError, "url param is requred" unless url
-      raise StandardError, "url is not morotube link: '#{url}'" unless MoroTube.valid_url? url
+      raise StandardError, 'url param is requred' unless url
+      raise StandardError, "url is not MoroTube link: #{url}" unless MoroTube.valid_url? url
       uri = URI.parse(url)
-      video_id = CGI.parse(uri.query)['clip']
-      @request_url = URI.join("#{uri.scheme}://#{uri.host}", "gen_xml.php?type=o&id=#{video_id}")
-      open_opt = { "User-Agent" => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)" }
-      @response_body = open(@request_url, open_opt) { |res| res.read }
+      uri.path = '/gen_xml.php'
+      uri.query = "type=o&id=#{CGI.parse(uri.query)['clip']}"
+      @request_url = uri.to_s
+      open_opt = { 'User-Agent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)' }
+      @response_body = open(uri, open_opt) { |res| res.read }
       xdoc = Hpricot.XML(@response_body.toutf8)
       @title = xdoc.search('/root/video/title').inner_html
       @video_url = xdoc.search('/root/video/file').inner_html
@@ -33,7 +35,7 @@ module VideoScraper
       @author = xdoc.search('/root/video/author').inner_html
       @duration = xdoc.search('/root/video/duration').inner_html
       @page_url = xdoc.search('/root/video/link').inner_html
-      
+
       response_body = open(url, open_opt) { |res| res.read }
       doc = Hpricot(response_body)
       doc.search('//input#inpVdoEmbed') do |elem|

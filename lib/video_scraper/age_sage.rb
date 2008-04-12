@@ -5,7 +5,7 @@ require 'hpricot'
 module VideoScraper
   class AgeSage
     attr_reader :request_url, :response_body, :page_url, :video_url, :thumb_url, :title, :embed_tag
-    
+
     def initialize(opt)
       @opt = opt.is_a?(String) ? { :url => opt } : opt
       do_query
@@ -19,14 +19,14 @@ module VideoScraper
     def _t(text)
       REXML::Text.unnormalize(text.get_text.to_s) rescue ''
     end
-    
+
     def do_query
       url = @opt[:url]
-      raise StandardError, "url param is requred" unless url
-      raise StandardError, "url is not agesage link: '#{url}'" unless AgeSage.valid_url? url
+      raise StandardError, 'url param is requred' unless url
+      raise StandardError, "url is not agesage link: #{url}" unless AgeSage.valid_url? url
       @request_url = url.sub('.html', '.xml')
       begin
-        open_opt = { "User-Agent" => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)" }
+        open_opt = { 'User-Agent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)' }
         @response_body = open(@request_url, open_opt) { |res| res.read }
       rescue OpenURI::HTTPError => e
         raise TryAgainLater, e.to_s if e.to_s.include?('503')

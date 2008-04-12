@@ -10,10 +10,10 @@ Web scraping library for video sharing sites.
 
 Supported sites
 
-* Youtube
-* Niconico Douga
-* Ameba Vision
-* Daily Motion
+* YouTube
+* NICO NICO DOUGA
+* AmebaVision
+* Dailymotion
 * Veoh
 * YourFileHost
 * RedTube
@@ -21,17 +21,17 @@ Supported sites
 * Ura Agesage
 * MoroTube
 * Pornotube
-* Youporn
+* YouPorn
 
 == SYNOPSIS:
 
    require 'video_scraper'
-   scraper = VideoScraper::scrape('http://www.youtube.com/watch?v=OFPnvARUOHI&feature=dir')
+   scraper = VideoScraper::scrape('http://www.youtube.com/watch?v=OFPnvARUOHI')
    scraper.video_url
    >> expect: "http://www.youtube.com/get_video?video_id=OFPnvARUOHI&t=OEgsToPDskIpQJU48rm4-sS1RtbItouY"
    scraper.thumb_url
    >> expect: "http://i.ytimg.com/vi/OFPnvARUOHI/default.jpg"
-   
+
 == REQUIREMENTS:
 
 * WWW::Mechanize

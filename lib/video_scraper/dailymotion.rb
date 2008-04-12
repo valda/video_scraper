@@ -6,9 +6,9 @@ require 'cgi'
 require 'pp'
 
 module VideoScraper
-  class DailyMotion
+  class Dailymotion
     attr_reader :request_url, :response_body, :page_url, :title, :video_url, :thumb_url, :embed_tag
-    
+
     def initialize(opt)
       @opt = opt.is_a?(String) ? { :url => opt } : opt
       @agent = WWW::Mechanize.new
@@ -23,26 +23,30 @@ module VideoScraper
     def self.get_mediaid(url)
       url.match(%r!\Ahttp://www\.dailymotion\.com/.*?/video/([\w/-]+)!)[1] rescue nil
     end
-    
+
     private
     def do_query
       url = @opt[:url]
-      raise StandardError, "url param is requred" unless url
-      raise StandardError, "url is not daily motion link: '#{url}'" unless DailyMotion.valid_url? url
-      @request_url = url
-      uri = URI.parse(url)
-      id = DailyMotion.get_mediaid(url)
-      
-      page = @agent.get(url)
+      raise StandardError, 'url param is requred' unless url
+      url = URI.parse(url)
+      raise StandardError, "url is not Dailymotion link: #{url}" unless Dailymotion.valid_url? url.to_s
+      @request_url = url.to_s
+      id = Dailymotion.get_mediaid(url.to_s)
+
+      page = @agent.get(url.to_s)
       @response_body = page.body
       page.root.search('//script').each do |elem|
-        if elem.inner_html.match(/\.addVariable\("video",\s+"([^\"]*)"/)
-          video_path = CGI.unescape($1).split(/(?:\|\||@@)/).first
-          @video_url = "#{uri.scheme}://#{uri.host}#{video_path}"
+        if elem.inner_html.match(/\.addVariable\("video",\s+"([^"]+)"/)
+          path, query = CGI.unescape($1).split(/\|\||@@/).first.split('?')
+          url.path = path.sub(%r{^/*}, '/')
+          url.query = query
+          @video_url = url.to_s
         end
-        if elem.inner_html.match(/\.addVariable\("preview",\s+"([^\"]*)"/)
-          preview_path = CGI.unescape($1).split(/(?:\|\||@@)/).first
-          @thumb_url = "#{uri.scheme}://#{uri.host}#{preview_path}"
+        if elem.inner_html.match(/\.addVariable\("preview",\s+"([^"]+)"/)
+          path, query = CGI.unescape($1).split(/\|\||@@/).first.split('?')
+          url.path = path.sub(%r{^/*}, '/')
+          url.query = query
+          @thumb_url = url.to_s
         end
       end
       @title = page.root.at('//h1[@class="nav with_uptitle"]').inner_html rescue nil
@@ -53,7 +57,7 @@ module VideoScraper
 end
 
 if $0 == __FILE__
-  w = VideoScraper::DailyMotion.new('http://www.dailymotion.com/mokelov/japan/video/x12gr3_music')
+  w = VideoScraper::Dailymotion.new('http://www.dailymotion.com/mokelov/japan/video/x12gr3_music')
   puts w.title
   puts w.video_url
   puts w.thumb_url

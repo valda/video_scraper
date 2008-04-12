@@ -7,22 +7,22 @@ require 'cgi'
 module VideoScraper
   class NicoVideo
     @@options ||= {}
-    
+
     def self.options
       @@options
     end
-    
+
     def self.options=(opts)
       @@options = opts
     end
 
     def self.configure(&proc)
-      raise ArgumentError, "Block is required." unless block_given?
+      raise ArgumentError, 'Block is required.' unless block_given?
       yield @@options
     end
-    
+
     attr_reader :request_url, :response_body, :page_url, :video_url, :thumb_url, :embed_tag
-    
+
     def initialize(opt)
       @opt = opt.is_a?(String) ? { :url => opt } : opt
       @agent = WWW::Mechanize.new
@@ -33,10 +33,10 @@ module VideoScraper
     def self.valid_url?(url)
       url =~ %r|\Ahttp://www\.nicovideo\.jp/watch/sm\d{7}|
     end
-    
+
     private
     def login
-      page = @agent.post("https://secure.nicovideo.jp/secure/login?site=niconico",
+      page = @agent.post('https://secure.nicovideo.jp/secure/login?site=niconico',
                          'mail' => NicoVideo.options[:mail],
                          'password' => NicoVideo.options[:password])
       raise RuntimeError, 'login failure' unless page.header['x-niconico-authflag'] == '1'
@@ -68,14 +68,14 @@ module VideoScraper
         @embed_tag = elem.attributes['value']
       end
     end
-    
+
     def do_query
       url = @opt[:url]
-      raise StandardError, "url param is requred" unless url
-      raise StandardError, "url is not nicovideo link: '#{url}'" unless NicoVideo.valid_url? url
+      raise StandardError, 'url param is requred' unless url
+      raise StandardError, "url is not Nico Video link: #{url}" unless NicoVideo.valid_url? url
       @page_url = url
       id = url.match(%r|www\.nicovideo\.jp/watch/([[:alnum:]]+)|)[1]
-      
+
       begin
         login
         get_flv(id)
@@ -85,9 +85,9 @@ module VideoScraper
         raise TryAgainLater, e.to_s
       rescue WWW::Mechanize::ResponseCodeError => e
         case e.response_code
-        when "404", "403"
+        when '404', '403'
           raise FileNotFound, e.to_s
-        when "502"
+        when '502'
           raise TryAgainLater, e.to_s
         else
           raise TryAgainLater, e.to_s
@@ -101,8 +101,8 @@ if $0 == __FILE__
   require 'yaml'
   y = YAML.load_file(File.join(ENV['HOME'], '.videoscraperrc'))
   VideoScraper::NicoVideo.configure do |conf|
-    conf[:mail] = y["nico_video"]["mail"]
-    conf[:password] = y["nico_video"]["password"]
+    conf[:mail] = y['nico_video']['mail']
+    conf[:password] = y['nico_video']['password']
   end
   w = VideoScraper::NicoVideo.new('http://www.nicovideo.jp/watch/sm2909967')
   puts w.video_url

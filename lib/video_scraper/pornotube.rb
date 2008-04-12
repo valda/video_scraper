@@ -3,12 +3,11 @@ require 'mechanize'
 require 'hpricot'
 require 'kconv'
 require 'cgi'
-require 'pp'
 
 module VideoScraper
   class Pornotube
     attr_reader :request_url, :response_body, :page_url, :video_url, :thumb_url, :embed_tag
-    
+
     def initialize(opt)
       @opt = opt.is_a?(String) ? { :url => opt } : opt
       @agent = WWW::Mechanize.new
@@ -26,7 +25,7 @@ module VideoScraper
       end
       nil
     end
-    
+
     private
     def login
       @agent.post("http://pornotube.com/index.php",
@@ -37,10 +36,10 @@ module VideoScraper
     def do_query
       url = @opt[:url]
       raise StandardError, "url param is requred" unless url
-      raise StandardError, "url is not pornotube link: '#{url}'" unless Pornotube.valid_url? url
+      raise StandardError, "url is not Pornotube link: #{url}" unless Pornotube.valid_url? url
       @page_url = url
       id = Pornotube.get_mediaid(url)
-      
+
       login
       page = @agent.get(@page_url)
       embed = page.root.at('//object/embed')
