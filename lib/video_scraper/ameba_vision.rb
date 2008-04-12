@@ -1,7 +1,7 @@
 require 'video_scraper'
 require 'mechanize'
 require 'hpricot'
-require 'conv'
+require 'kconv'
 
 module VideoScraper
   class AmebaVision
