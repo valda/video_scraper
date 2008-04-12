@@ -32,7 +32,7 @@ module VideoScraper
     def do_query
       url = @opt[:url]
       raise StandardError, 'url param is requred' unless url
-		raise StandardError, "url is not YourFileHost link: #{url}" unless YourFileHost.valid_url? url
+      raise StandardError, "url is not YourFileHost link: #{url}" unless YourFileHost.valid_url? url
       open_opt = { 'User-Agent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)' }
       html = open(url, open_opt) { |res| res.read }
       doc = Hpricot(html)
