@@ -1,6 +1,6 @@
 = VideoScraper
 
-* FIX (url)
+* http://coderepos.org/share/browser/lang/ruby/video_scraper
 
 == DESCRIPTION:
 
