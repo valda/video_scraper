@@ -25,12 +25,12 @@ Supported sites
 
 == SYNOPSIS:
 
-   require 'video_scraper'
-   scraper = VideoScraper::scrape('http://www.youtube.com/watch?v=OFPnvARUOHI')
-   scraper.video_url
-   >> expect: "http://www.youtube.com/get_video?video_id=OFPnvARUOHI&t=OEgsToPDskIpQJU48rm4-sS1RtbItouY"
-   scraper.thumb_url
-   >> expect: "http://i.ytimg.com/vi/OFPnvARUOHI/default.jpg"
+   >> require 'www/video_scraper'
+   >> scraper = WWW::VideoScraper.scrape('http://www.youtube.com/watch?v=OFPnvARUOHI')
+   >> scraper.video_url
+   => "http://www.youtube.com/get_video?video_id=OFPnvARUOHI&t=OEgsToPDskIpQJU48rm4-sS1RtbItouY"
+   >> scraper.thumb_url
+   => "http://i.ytimg.com/vi/OFPnvARUOHI/default.jpg"
 
 == REQUIREMENTS:
 
@@ -45,7 +45,7 @@ Supported sites
 
 (The MIT License)
 
-Copyright (c) 2008 YAMAGUCHI Seiji <valda at underscore.jp>
+Copyright (c) 2009 YAMAGUCHI Seiji <valda at underscore.jp>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
