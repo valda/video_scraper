@@ -1,9 +1,8 @@
-require 'video_scraper'
-require 'mechanize'
-require 'hpricot'
-require 'json'
-require 'uri'
+# -*- mode:ruby; coding:utf-8 -*-
 
+require File.expand_path(File.join(File.dirname(__FILE__), 'video_scraper'))
+
+module WWW
   module VideoScraper
     class YouTube
       @@options ||= {}
@@ -92,6 +91,7 @@ require 'uri'
       end
     end
   end
+end
 
 if $0 == __FILE__
   require 'yaml'
