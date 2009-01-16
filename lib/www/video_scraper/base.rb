@@ -32,16 +32,19 @@ module WWW
         end
       end
 
-      def http_get(url)
-        open_opt = { "User-Agent" => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)" }
+      def http_get(url, opt = nil)
+        open_opt = {
+          "User-Agent" => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)",
+        }.merge( opt || {} )
         if @opt[:cache]
           unless @opt[:cache].respond_to?(:get) and @opt[:cache].respond_to?(:set)
             raise RuntimeError, 'As for cache object what responds to :get and :set is required.'
           end
           @opt[:logger].debug 'use cache.'
-          unless content = @opt[:cache].get(url)
+          cache_key = "#{url}|#{open_opt}"
+          unless content = @opt[:cache].get(cache_key)
             content = open(url, open_opt) {|fh| fh.read }
-            @opt[:cache].set(url, content)
+            @opt[:cache].set(cache_key, content)
           end
         else
           content = open(url, open_opt) {|fh| fh.read }

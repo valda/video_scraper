@@ -17,27 +17,27 @@ module WWW
     class TryAgainLater < RuntimeError; end
     class FileNotFound < RuntimeError; end
     VERSION = '1.0.0'
-    
+
     MODULES_NAME = %w(age_sage ameba_vision dailymotion moro_tube
                       nico_video pornhub pornotube red_tube veoh
                       you_porn you_tube your_file_host)
-    
+
     @@modules = MODULES_NAME.map do |name|
       require "www/video_scraper/#{name}"
       const_get( name.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } )
     end
-      
+
     @@options = {
       :logger => nil,
       :cache => nil,
       :debug => false,
     }
-    
+
     class << self
       def options
         @@options
       end
-      
+
       def options=(opts)
         @@options = opts
       end
@@ -82,12 +82,4 @@ module WWW
       end
     end
   end
-end
-
-
-if $0 == __FILE__
-   #   'http://www.yourfilehost.com/media.php?cat=video&file=XV436__03.wmv',
-   #   'http://www.morotube.com/watch.php?clip=46430e1d',
-   #   'http://www.pornhub.com/view_video.php?viewkey=35f8c5b464a15c9d3567',
-   #   'http://www.redtube.com/8415',
 end
