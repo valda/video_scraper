@@ -34,6 +34,9 @@ module WWW
         xdoc.search('//thumbnail_url') do |elem|
           @thumb_url = elem.inner_html
         end
+        xdoc.search('//thumb/title') do |elem|
+          @title = elem.inner_html
+        end
       end
 
       def get_embed_tag(id)

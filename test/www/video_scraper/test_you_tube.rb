@@ -5,6 +5,7 @@ $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../../../lib'))
 require 'www/video_scraper'
 require 'filecache'
 require 'fileutils'
+require 'pit'
 
 class TestYouTube < Test::Unit::TestCase
   def setup
@@ -13,13 +14,11 @@ class TestYouTube < Test::Unit::TestCase
       conf[:cache] = FileCache.new('TestVideoScraper', @cache_root, 60*60*24)
     end
 
-    #require 'yaml'
-    #y = YAML.load_file(File.join(ENV['HOME'], '.videoscraperrc'))
-    #VideoScraper::YouTube.configure do |conf|
-    #  conf[:mail] = y['youtube']['mail']
-    #  conf[:password] = y['youtube']['password']
-    #end
-    @opt = { :you_tube_username => 'gyouzanoohsyou', :you_tube_password => 'ahoahoman' }
+    config = Pit.get('youtube.com', :require => {
+                       'username' => 'your email in youtube.com',
+                       'password' => 'your password in youtube.com'
+                     })
+    @opt = { :you_tube_username => config['username'], :you_tube_password => config['password'] }
   end
 
   def teardown

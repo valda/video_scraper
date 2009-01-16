@@ -5,6 +5,7 @@ $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../../../lib'))
 require 'www/video_scraper'
 require 'filecache'
 require 'fileutils'
+require 'pit'
 
 class TestNicoVideo < Test::Unit::TestCase
   def setup
@@ -12,6 +13,11 @@ class TestNicoVideo < Test::Unit::TestCase
     WWW::VideoScraper.configure do |conf|
       conf[:cache] = FileCache.new('TestVideoScraper', @cache_root, 60*60*24)
     end
+    config = Pit.get('nicovideo.jp', :require => {
+                       'mail' => 'your email in nicovideo.jp',
+                       'password' => 'your password in nicovideo.jp'
+                     })
+    @opt = { :nico_video_mail => config['mail'], :nico_video_password => config['password'] }
   end
 
   def teardown
@@ -19,12 +25,11 @@ class TestNicoVideo < Test::Unit::TestCase
   end
 
   def test_scrape
-    vs = WWW::VideoScraper.scrape('http://www.nicovideo.jp/watch/sm2909967',
-                                  :nico_video_mail => 'gyouzanoohsyou@hotmail.com',
-                                  :nico_video_password => 'gyouzanoohsyou')
-    assert_equal 'http://www.nicovideo.jp/watch/sm2909967', vs.page_url
+    vs = WWW::VideoScraper.scrape('http://www.nicovideo.jp/watch/sm1175788', @opt)
+    assert_equal 'http://www.nicovideo.jp/watch/sm1175788', vs.page_url
     assert_match %r|http://smile-[[:alnum:]]+\.nicovideo\.jp/smile\?v=\d{7}\.\d{5}|, vs.video_url
     assert_match %r|http://tn-skr\d+\.smilevideo\.jp/smile\?i=\d{7}|, vs.thumb_url
     assert_match %r|^<iframe\s+.*</iframe>$|, vs.embed_tag
+    assert_equal '本格的 ガチムチパンツレスリング', vs.title
   end
 end
