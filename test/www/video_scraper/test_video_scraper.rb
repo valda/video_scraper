@@ -1,7 +1,8 @@
 # -*- mode:ruby; coding:utf-8 -*-
 
 require 'test/unit'
-require File.expand_path(File.dirname(__FILE__) + "/../../../lib/www/video_scraper")
+$:.unshift(File.expand_path(File.dirname(__FILE__) + '/../../../lib'))
+require 'www/video_scraper'
 require 'filecache'
 require 'fileutils'
 
@@ -18,5 +19,6 @@ class TestVideoScraper < Test::Unit::TestCase
     WWW::VideoScraper.configure do |conf|
       conf[:cache] = FileCache.new('TestVideoScraper', @cache_root, 60*60*24)
     end
+    assert_kind_of FileCache, WWW::VideoScraper.options[:cache]
   end
 end

@@ -1,7 +1,8 @@
 # -*- mode:ruby; coding:utf-8 -*-
 
 require 'test/unit'
-require File.expand_path(File.dirname(__FILE__) + "/../../../lib/www/video_scraper")
+$:.unshift(File.expand_path(File.dirname(__FILE__) + '/../../../lib'))
+require 'www/video_scraper'
 require 'filecache'
 require 'fileutils'
 

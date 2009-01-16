@@ -1,12 +1,10 @@
 # -*- mode:ruby; coding:utf-8 -*-
 
-require File.expand_path(File.join(File.dirname(__FILE__), 'video_scraper'))
+require 'www/video_scraper/base'
 
 module WWW
   module VideoScraper
     class NicoVideo
-      VideoScraper.register_factory self
-      
       @@options ||= {}
 
       def self.options
