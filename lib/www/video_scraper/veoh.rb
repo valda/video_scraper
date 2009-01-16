@@ -4,48 +4,27 @@ require 'www/video_scraper/base'
 
 module WWW
   module VideoScraper
-    class Veoh
-      attr_reader :request_url, :response_body, :page_url, :title, :video_url, :thumb_url
+    class Veoh < Base
+      url_regex %r!\Ahttp://www\.veoh\.com/videos/([[:alnum:]]+)!
 
-      def initialize(opt)
-        @opt = opt.is_a?(String) ? { :url => opt } : opt
-        @agent = WWW::Mechanize.new
-        @agent.user_agent_alias = 'Windows IE 6'
+      def initialize(url, opt = nil)
+        super
         do_query
-      end
-
-      def self.valid_url?(url)
-        get_mediaid(url)
-      end
-
-      def self.get_mediaid(url)
-        url.match(%r!\Ahttp://www\.veoh\.com/videos/(\w+)!)[1] rescue nil
       end
 
       private
       def do_query
-        url = @opt[:url]
-        raise StandardError, 'url param is requred' unless url
-        raise StandardError, "url is not Veoh link: #{url}" unless Veoh.valid_url? url
-        @page_url = url
-        id = Veoh.get_mediaid(url)
-
-        @request_url = "http://www.veoh.com/rest/video/#{id}/details"
-        page = @agent.get(@request_url)
-        @response_body = page.body
-        xdoc = Hpricot.XML(@response_body.toutf8)
-        video = xdoc.at('//video')
-        @video_url = video.attributes['fullPreviewHashPath']
-        @title = video.attributes['title']
-        @thumb_url = video.attributes['fullMedResImagePath']
+        @id = url_regex_match[1]
+        request_url = "http://www.veoh.com/rest/video/#{@id}/details"
+        xml = http_get(request_url)
+        @video_url = xml.match(/fullPreviewHashPath="([^"]+)"/).to_a[1]
+        @title = xml.match(/title="([^"]+)"/).to_a[1]
+        @thumb_url = xml.match(/fullMedResImagePath="([^"]+)"/).to_a[1]
+        html = http_get(@page_url)
+        embed_tag = html.match(/\sid="embed"\s[^>]*value="([^"]+)"/).to_a[1]
+        @embed_tag = CGI.unescapeHTML embed_tag
       end
     end
   end
 end
 
-if $0 == __FILE__
-  w = VideoScraper::Veoh.new('http://www.veoh.com/videos/v6245232rh8aGEM9')
-  puts w.title
-  puts w.video_url
-  puts w.thumb_url
-end

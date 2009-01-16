@@ -3,22 +3,35 @@
 module WWW
   module VideoScraper
     class Base
-      attr_reader :page_url, :video_url, :thumb_url, :embed_tag
-      def initialize(url, opt = nil)
-        raise StandardError, "url is not #{self.class.name} link: #{url}" unless self.class.valid_url?(url)
-        @page_url = url
-        @opt = (opt || {})
+      attr_reader :page_url, :video_url, :thumb_url, :embed_tag, :title
+
+      ## class methods
+      class << self
+        def url_regex(regex)
+          @url_regex = regex
+        end
+
+        def valid_url?(url)
+          not (url =~ @url_regex).nil?
+        end
       end
 
-      def self.url_pattern(regex)
-        @url_pattern = regex
-      end
-      
-      def self.valid_url?(url)
-        not (url =~ @url_pattern).nil?
+      def initialize(url, opt = nil)
+        @page_url = url
+        @opt = (opt || {})
+        @url_regex_match = self.class.instance_variable_get(:@url_regex).match(@page_url).freeze
+        raise StandardError, "url is not #{self.class.name} link: #{url}" if @url_regex_match.nil?
       end
 
       private
+      def url_regex_match; @url_regex_match; end
+
+      def agent
+        @agent ||= WWW::Mechanize.new do |a|
+          a.user_agent_alias = 'Windows IE 6'
+        end
+      end
+
       def http_get(url)
         open_opt = { "User-Agent" => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)" }
         if @opt[:cache]
@@ -38,7 +51,7 @@ module WWW
         raise TryAgainLater, e.to_s if e.to_s.include?('503')
         raise e
       end
-      
+
     end
   end
 end

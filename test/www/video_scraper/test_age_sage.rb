@@ -11,9 +11,9 @@ class TestAgeSage < Test::Unit::TestCase
     @cache_root = '/tmp/test_video_scraper_cache'
     WWW::VideoScraper.configure do |conf|
       conf[:cache] = FileCache.new('TestVideoScraper', @cache_root, 60*60*24)
-    end     
+    end
   end
-  
+
   def teardown
     # FileUtils.remove_entry_secure(@cache_root, true)
   end

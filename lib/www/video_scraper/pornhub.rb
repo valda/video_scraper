@@ -5,8 +5,8 @@ require 'www/video_scraper/base'
 module WWW
   module VideoScraper
     class Pornhub < Base
-      url_pattern %r|\Ahttp://www\.pornhub\.com/view_video\.php.*viewkey=[[:alnum:]]{20}|
-      
+      url_regex %r|\Ahttp://www\.pornhub\.com/view_video\.php.*viewkey=[[:alnum:]]{20}|
+
       def initialize(url, opt = nil)
         super
         do_query
@@ -22,9 +22,7 @@ module WWW
         if m = @video_url.match(%r|videos/(\d{3}/\d{3}/\d{3})/\d+.flv|)
           @thumb_url = "http://p1.pornhub.com/thumbs/#{m[1]}/small.jpg"
         end
-        if m = html.match(%r|<textarea[^>]+class="share-flag-embed">(<object type="application/x-shockwave-flash".*?</object>)</textarea>|)
-          @embed_tag = m[1]
-        end
+        @embed_tag = html.match(%r|<textarea[^>]+class="share-flag-embed">(<object type="application/x-shockwave-flash".*?</object>)</textarea>|).to_a[1]
       end
     end
   end

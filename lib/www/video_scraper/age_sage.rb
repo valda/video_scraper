@@ -5,8 +5,8 @@ require 'www/video_scraper/base'
 module WWW
   module VideoScraper
     class AgeSage < Base
-      url_pattern %r!\Ahttp://adult\.agesage\.jp/contentsPage\.html\?mcd=[[:alnum:]]{16}!
-      
+      url_regex %r!\Ahttp://adult\.agesage\.jp/contentsPage\.html\?mcd=[[:alnum:]]{16}!
+
       def initialize(url, opt = nil)
         super
         do_query
