@@ -1,6 +1,6 @@
 # -*- mode:ruby; coding:utf-8 -*-
 
-require 'www/video_scraper/base'
+require File.expand_path(File.dirname(__FILE__) + '/base')
 
 module WWW
   module VideoScraper

@@ -1,11 +1,6 @@
 # -*- mode:ruby; coding:utf-8 -*-
 
-require 'test/unit'
-$:.unshift(File.expand_path(File.dirname(__FILE__) + '/../../../lib'))
-require 'www/video_scraper'
-require 'filecache'
-require 'fileutils'
-require 'pit'
+require File.dirname(__FILE__) + '/../../test_helper'
 
 class TestYouTube < Test::Unit::TestCase
   def setup

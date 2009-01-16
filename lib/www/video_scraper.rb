@@ -16,14 +16,14 @@ module WWW
   module VideoScraper
     class TryAgainLater < RuntimeError; end
     class FileNotFound < RuntimeError; end
-    VERSION = '1.0.0'
+    VERSION = '1.0.1'
 
     MODULES_NAME = %w(age_sage ameba_vision dailymotion moro_tube
                       nico_video pornhub pornotube red_tube veoh
                       you_porn you_tube your_file_host)
 
     @@modules = MODULES_NAME.map do |name|
-      require "www/video_scraper/#{name}"
+      require File.expand_path(File.join(File.dirname(__FILE__), 'video_scraper', name))
       const_get( name.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } )
     end
 
