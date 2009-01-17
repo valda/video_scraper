@@ -59,7 +59,7 @@ spec = Gem::Specification.new do |s|
        #s.autorequire       = ""
        s.test_files        = Dir["test/*_test.rb"]
 
-       #s.add_dependency('activesupport', '>=1.3.1')
+       s.add_dependency('mechanize', '>=0.8.4')
        #s.required_ruby_version = '>= 1.8.2'
 
        s.files = %w(README ChangeLog Rakefile) +
