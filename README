@@ -1,6 +1,7 @@
-= VideoScraper
+= WWW::VideoScraper
 
 * http://coderepos.org/share/browser/lang/ruby/video_scraper
+* http://github.com/valda/video_scraper/tree/master
 
 == DESCRIPTION:
 
@@ -36,10 +37,11 @@ Supported sites
 
 * WWW::Mechanize
 * Hpricot
+* CGIAlt (recommend)
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install valda-video_scraper
 
 == LICENSE:
 
