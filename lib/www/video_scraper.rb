@@ -29,7 +29,6 @@ module WWW
     @@options = {
       :logger => nil,
       :cache => nil,
-      :debug => false,
     }
 
     class << self
@@ -80,8 +79,7 @@ module WWW
       private
       def logger
         return @@options[:logger] if @@options[:logger]
-        require 'logger'
-        @@options[:logger] = Logger.new(STDOUT)
+        @@options[:logger] = NullLogger.new
       end
     end
   end

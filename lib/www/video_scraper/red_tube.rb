@@ -7,11 +7,6 @@ module WWW
     class RedTube < Base
       url_regex %r|\Ahttp://www\.redtube\.com/(\d{4})|
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       def embed_tag
         return @embed_tag if @embed_tag
         url = "http://www.redtube.com/embed/#{content_id}"
@@ -26,7 +21,7 @@ module WWW
       private
       def content_id; url_regex_match[1]; end
 
-      def do_query
+      def scrape
         s = content_id || '0'
         s = '1' if s.empty?
         pathnr = s.to_i / 1000

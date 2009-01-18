@@ -7,11 +7,6 @@ module WWW
     class YouTube < Base
       url_regex %r!\Ahttp://(?:www|jp)\.youtube\.com/watch.*[?&]v=([[:alnum:]]+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
       def login
         uri = URI.parse(@page_url)
@@ -34,7 +29,7 @@ module WWW
         page
       end
 
-      def do_query
+      def scrape
         page = pass_verify_age
         @title = page.root.at('//head/title').inner_html.sub(/^YouTube[\s-]*/, '') rescue ''
         @embed_tag = page.root.at('//input[@id="embed_code"]').attributes['value'] rescue nil

@@ -7,11 +7,6 @@ module WWW
     class NicoVideo < Base
       url_regex %r!\Ahttp://www\.nicovideo\.jp/watch/([[:alnum:]]+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
       def login
         page = agent.post('https://secure.nicovideo.jp/secure/login?site=niconico',
@@ -48,7 +43,7 @@ module WWW
         end
       end
 
-      def do_query
+      def scrape
         begin
           login
           id = url_regex_match[1]

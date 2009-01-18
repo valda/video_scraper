@@ -7,6 +7,7 @@ class TestYouTube < Test::Unit::TestCase
     @cache_root = '/tmp/test_video_scraper_cache'
     WWW::VideoScraper.configure do |conf|
       conf[:cache] = FileCache.new('TestVideoScraper', @cache_root, 60*60*24)
+      conf[:logger] = Logger.new(STDOUT)
     end
 
     config = Pit.get('youtube.com', :require => {

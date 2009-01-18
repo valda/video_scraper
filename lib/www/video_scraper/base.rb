@@ -5,6 +5,10 @@ module WWW
     class TryAgainLater < RuntimeError; end
     class FileNotFound < RuntimeError; end
 
+    class NullLogger
+      def method_missing(name, *args); return nil; end
+    end
+
     class Base
       attr_reader :page_url, :video_url, :thumb_url, :embed_tag, :title
 
@@ -24,15 +28,27 @@ module WWW
         @opt = (opt || {})
         @url_regex_match = self.class.instance_variable_get(:@url_regex).match(@page_url).freeze
         raise StandardError, "url is not #{self.class.name} link: #{url}" if @url_regex_match.nil?
+        scrape
       end
 
       private
-      def url_regex_match; @url_regex_match; end
+      def scrape
+        raise StandardError, 'not implemented yet'
+      end
+
+      def url_regex_match
+        @url_regex_match
+      end
 
       def agent
         @agent ||= WWW::Mechanize.new do |a|
           a.user_agent_alias = 'Windows IE 6'
         end
+      end
+
+      def logger
+        return @opt[:logger] if @opt[:logger]
+        @opt[:logger] = NullLogger.new
       end
 
       def http_get(url, opt = nil)
