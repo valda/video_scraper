@@ -7,7 +7,7 @@ require 'kconv'
 require 'json'
 require 'uri'
 begin
-  require 'cgialt'
+  require 'cgialt' unless defined? CGI
 rescue LoadError
   require 'cgi'
 end
@@ -32,6 +32,10 @@ module WWW
     }
 
     class << self
+      def modules
+        @@nodules
+      end
+
       def options
         @@options
       end
