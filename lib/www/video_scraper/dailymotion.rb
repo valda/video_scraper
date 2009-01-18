@@ -7,13 +7,8 @@ module WWW
     class Dailymotion < Base
       url_regex %r!\Ahttp://www\.dailymotion\.com/.*?/video/([\w/-]+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         uri = URI.parse(@page_url)
         html = http_get(@page_url)
         doc = Hpricot(html.toutf8)

@@ -7,13 +7,8 @@ module WWW
     class Veoh < Base
       url_regex %r!\Ahttp://www\.veoh\.com/videos/([[:alnum:]]+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         @id = url_regex_match[1]
         request_url = "http://www.veoh.com/rest/video/#{@id}/details"
         xml = http_get(request_url)

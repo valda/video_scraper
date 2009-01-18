@@ -7,13 +7,8 @@ module WWW
     class Tube8 < Base
       url_regex %r!\Ahttp://www\.tube8\.com/.*/(\d+)(?:/|$)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         html = http_get(@page_url)
         doc = Hpricot(html.toutf8)
         raise FileNotFound unless flashvars = doc.at('//object //param[@name="FlashVars"]')

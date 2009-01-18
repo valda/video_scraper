@@ -8,13 +8,8 @@ module WWW
       url_regex %r!\Ahttp://www\.morotube\.com/watch\.php\?clip=([[:alnum:]]{8})!
       attr_reader :author, :duration
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         uri = URI.parse(@page_url)
         uri.path = '/gen_xml.php'
         uri.query = "type=o&id=#{url_regex_match[1]}"

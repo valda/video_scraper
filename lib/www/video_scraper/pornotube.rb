@@ -7,11 +7,6 @@ module WWW
     class Pornotube < Base
       url_regex %r!\Ahttp://(?:www\.)?pornotube\.com/(?:media|channels)\.php\?.*m=(\d+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
       def login
         agent.post("http://pornotube.com/index.php",
@@ -22,7 +17,7 @@ module WWW
                    'submit' => 'View All Content')
       end
 
-      def do_query
+      def scrape
         id = url_regex_match[1]
 
         login

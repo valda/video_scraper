@@ -11,11 +11,6 @@ module WWW
       class BandwidthAllowanceExceeded < TryAgainLater; end
       class NoFileCategory < FileNotFound; end
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       def filename
         uri = URI.parse(@page_url)
         q = CGI.parse(uri.query)
@@ -24,7 +19,7 @@ module WWW
       alias :title :filename
 
       private
-      def do_query
+      def scrape
         html = http_get(@page_url)
         doc = Hpricot(html.toutf8)
         if elem = doc.at('//object[@id="objectPlayer"] //param[@name="movie"]')

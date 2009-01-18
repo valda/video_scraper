@@ -7,13 +7,8 @@ module WWW
     class AgeSage < Base
       url_regex %r!\Ahttp://adult\.agesage\.jp/contentsPage\.html\?mcd=[[:alnum:]]{16}!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         @request_url = @page_url.sub('.html', '.xml')
         @response_body = http_get(@request_url)
         raise FileNotFound if @response_body.nil? or @response_body.empty?

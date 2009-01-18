@@ -7,13 +7,8 @@ module WWW
     class AmebaVision < Base
       url_regex %r!\Ahttp://vision\.ameba\.jp/watch\.do.*?\?movie=(\d+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         id = url_regex_match[1]
         request_url = "http://vision.ameba.jp/api/get/detailMovie.do?movie=#{id}"
         xml = http_get(request_url)

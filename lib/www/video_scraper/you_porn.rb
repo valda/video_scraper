@@ -7,13 +7,8 @@ module WWW
     class YouPorn < Base
       url_regex %r!\Ahttp://youporn\.com/watch/(\d+)!
 
-      def initialize(url, opt = nil)
-        super
-        do_query
-      end
-
       private
-      def do_query
+      def scrape
         id = url_regex_match[1]
 
         request_url = @page_url.sub(/(\?.*)?$/, '?user_choice=Enter')
