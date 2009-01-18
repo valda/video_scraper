@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'open-uri'
+require 'hpricot'
 require 'mechanize'
 require 'kconv'
 require 'json'
