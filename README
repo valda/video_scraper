@@ -11,18 +11,19 @@ Web scraping library for video sharing sites.
 
 Supported sites
 
-* YouTube
-* NICO NICO DOUGA
 * AmebaVision
 * Dailymotion
-* Veoh
-* YourFileHost
-* RedTube
-* Pornhub
-* Ura Agesage
 * MoroTube
+* NICO NICO DOUGA
+* Pornhub
 * Pornotube
+* RedTube
+* Tube8
+* Ura Agesage
+* Veoh
 * YouPorn
+* YouTube
+* YourFileHost
 
 == SYNOPSIS:
 
