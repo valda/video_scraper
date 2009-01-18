@@ -2,6 +2,9 @@
 
 module WWW
   module VideoScraper
+    class TryAgainLater < RuntimeError; end
+    class FileNotFound < RuntimeError; end
+
     class Base
       attr_reader :page_url, :video_url, :thumb_url, :embed_tag, :title
 

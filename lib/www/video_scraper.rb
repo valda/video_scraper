@@ -14,12 +14,10 @@ end
 
 module WWW
   module VideoScraper
-    class TryAgainLater < RuntimeError; end
-    class FileNotFound < RuntimeError; end
     VERSION = '1.0.1'
 
     MODULES_NAME = %w(age_sage ameba_vision dailymotion moro_tube
-                      nico_video pornhub pornotube red_tube veoh
+                      nico_video pornhub pornotube red_tube tube8 veoh
                       you_porn you_tube your_file_host)
 
     @@modules = MODULES_NAME.map do |name|
