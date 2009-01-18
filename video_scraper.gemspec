@@ -25,10 +25,13 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<mechanize>, [">= 0.8.4"])
+      s.add_runtime_dependency(%q<hpricot>, [">= 0.6.164"])
     else
       s.add_dependency(%q<mechanize>, [">= 0.8.4"])
+      s.add_dependency(%q<hpricot>, [">= 0.6.164"])
     end
   else
     s.add_dependency(%q<mechanize>, [">= 0.8.4"])
+    s.add_dependency(%q<hpricot>, [">= 0.6.164"])
   end
 end
