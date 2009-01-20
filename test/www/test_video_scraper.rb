@@ -13,7 +13,7 @@ class TestVideoScraper < Test::Unit::TestCase
 
   def test_configure
     WWW::VideoScraper.options = {}
-    
+
     assert_nil WWW::VideoScraper.options[:cache]
     assert_nil WWW::VideoScraper.options[:logger]
 

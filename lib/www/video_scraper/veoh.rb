@@ -16,10 +16,10 @@ module WWW
         @title = xml.match(/title="([^"]+)"/).to_a[1]
         @thumb_url = xml.match(/fullMedResImagePath="([^"]+)"/).to_a[1]
         html = http_get(@page_url)
-        embed_tag = html.match(/\sid="embed"\s[^>]*value="([^"]+)"/).to_a[1]
-        @embed_tag = CGI.unescapeHTML embed_tag
+        if embed_tag = html.match(/\sid="embed"\s[^>]*value="([^"]+)"/).to_a[1]
+          @embed_tag = CGI.unescapeHTML(embed_tag)
+        end
       end
     end
   end
 end
-
