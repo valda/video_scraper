@@ -7,6 +7,27 @@ module WWW
     class NicoVideo < Base
       url_regex %r!\Ahttp://www\.nicovideo\.jp/watch/([[:alnum:]]+)!
 
+      def scrape
+        begin
+          login
+          id = url_regex_match[1]
+          get_flv(id)
+          get_thumb(id)
+          get_embed_tag(id)
+        rescue Timeout::Error => e
+          raise TryAgainLater, e.to_s
+        rescue WWW::Mechanize::ResponseCodeError => e
+          case e.response_code
+          when '404', '403'
+            raise FileNotFound, e.to_s
+          when '502'
+            raise TryAgainLater, e.to_s
+          else
+            raise TryAgainLater, e.to_s
+          end
+        end
+      end
+
       private
       def login
         page = agent.post('https://secure.nicovideo.jp/secure/login?site=niconico',
@@ -40,27 +61,6 @@ module WWW
         doc = Hpricot(response_body)
         doc.search('//form[@name="form_iframe"] //input[@name="input_iframe"]') do |elem|
           @embed_tag = elem.attributes['value']
-        end
-      end
-
-      def scrape
-        begin
-          login
-          id = url_regex_match[1]
-          get_flv(id)
-          get_thumb(id)
-          get_embed_tag(id)
-        rescue Timeout::Error => e
-          raise TryAgainLater, e.to_s
-        rescue WWW::Mechanize::ResponseCodeError => e
-          case e.response_code
-          when '404', '403'
-            raise FileNotFound, e.to_s
-          when '502'
-            raise TryAgainLater, e.to_s
-          else
-            raise TryAgainLater, e.to_s
-          end
         end
       end
     end

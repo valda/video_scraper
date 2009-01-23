@@ -8,7 +8,6 @@ module WWW
       url_regex %r!\Ahttp://www\.morotube\.com/watch\.php\?clip=([[:alnum:]]{8})!
       attr_reader :author, :duration
 
-      private
       def scrape
         uri = URI.parse(@page_url)
         uri.path = '/gen_xml.php'

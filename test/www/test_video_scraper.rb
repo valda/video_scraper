@@ -25,5 +25,17 @@ class TestVideoScraper < Test::Unit::TestCase
     assert_kind_of FileCache, WWW::VideoScraper.options[:cache]
     assert_kind_of Logger, WWW::VideoScraper.options[:logger]
   end
+
+  def test_find_module
+    mod = WWW::VideoScraper.find_module('http://jp.youtube.com/watch?v=Ym20IwIUbuU')
+    assert_equal WWW::VideoScraper::YouTube, mod
+    mod = WWW::VideoScraper.find_module('http://www.nicovideo.jp/watch/sm1175788')
+    assert_equal WWW::VideoScraper::NicoVideo, mod
+  end
+
+  def test_scrape
+    vs = WWW::VideoScraper.scrape('http://www.yourfilehost.com/media.php?cat=video&file=XV436__03.wmv')
+    assert_kind_of WWW::VideoScraper::Yourfilehost, vs
+  end
 end
 

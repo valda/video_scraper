@@ -8,7 +8,6 @@ module WWW
       attr_reader :video_url_3gp
       url_regex %r!\Ahttp://www\.tube8\.com/.*/(\d+)(?:/|$)!
 
-      private
       def scrape
         html = http_get(@page_url)
         doc = Hpricot(html.toutf8)

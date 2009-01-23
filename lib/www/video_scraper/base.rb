@@ -21,6 +21,12 @@ module WWW
         def valid_url?(url)
           not (url =~ @url_regex).nil?
         end
+
+        def scrape(url, opt = nil)
+          instance = self.new(url, opt)
+          instance.scrape
+          instance
+        end
       end
 
       def initialize(url, opt = nil)
@@ -28,14 +34,13 @@ module WWW
         @opt = (opt || {})
         @url_regex_match = self.class.instance_variable_get(:@url_regex).match(@page_url).freeze
         raise StandardError, "url is not #{self.class.name} link: #{url}" if @url_regex_match.nil?
-        scrape
       end
 
-      private
       def scrape
         raise StandardError, 'not implemented yet'
       end
 
+      protected
       def url_regex_match
         @url_regex_match
       end

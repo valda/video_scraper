@@ -7,7 +7,6 @@ module WWW
     class Pornhub < Base
       url_regex %r|\Ahttp://www\.pornhub\.com/view_video\.php.*viewkey=[[:alnum:]]{20}|
 
-      private
       def scrape
         html = http_get(@page_url)
         raise FileNotFound unless m = html.match(/\.addVariable\("options",\s*"([^"]+)"\);/i)
