@@ -5,14 +5,16 @@ require File.expand_path(File.dirname(__FILE__) + '/base')
 module WWW
   module VideoScraper
     class RedTube < Base
-      url_regex %r|\Ahttp://www\.redtube\.com/(\d{4})|
+      url_regex %r|\Ahttp://www\.redtube\.com/(\d+)|
 
       def scrape
         s = content_id || '0'
         s = '1' if s.empty?
         pathnr = s.to_i / 1000
         s = "%07d" % s.to_i
+        logger.debug s
         pathnr = "%07d" % pathnr
+        logger.debug pathnr
         xc = %w!R 1 5 3 4 2 O 7 K 9 H B C D X F G A I J 8 L M Z 6 P Q 0 S T U V W E Y N!
         qsum = 0
         s.length.times do |i|
@@ -35,8 +37,31 @@ module WWW
         code += xc[s[4] - 48 + qsum + 7]
         code += xc[s[6] - 48 + qsum + 4]
         content_video = pathnr + '/' + code + '.flv'
+        @pathnr = pathnr
+        @s = s
         @video_url = "http://dl.redtube.com/_videos_t4vn23s9jc5498tgj49icfj4678/#{content_video}"
-        # @thumb_url = "http://thumbs.redtube.com/_thumbs/#{pathnr}/#{s}/#{s}_#{'%03d' % i}.jpg"
+      end
+
+      def thumb_url
+        return @thumb_url if @thumb_url
+        1.upto(10) do |i|
+          url = "http://thumbs.redtube.com/_thumbs/#{@pathnr}/#{@s}/#{@s}_#{'%03d' % i}.jpg"
+          logger.debug url
+          begin
+            uri = URI.parse(url)
+            Net::HTTP.start(uri.host, uri.port) do |http|
+              response = http.head(uri.request_uri,
+                                   {"User-Agent" => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)"})
+              logger.debug response.code
+              if 200 == response.code.to_i
+                @thumb_url = url
+                return @thumb_url
+              end
+            end
+          rescue TimeoutError, Timeout::Error, Errno::ETIMEDOUT
+          end
+        end
+        nil
       end
 
       def embed_tag

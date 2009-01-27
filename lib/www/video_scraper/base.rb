@@ -78,7 +78,6 @@ module WWW
         raise TryAgainLater, e.to_s if e.to_s.include?('503')
         raise e
       end
-
     end
   end
 end
