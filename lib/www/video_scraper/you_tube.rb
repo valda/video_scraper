@@ -28,7 +28,7 @@ module WWW
       def login
         uri = URI.parse(@page_url)
         page = agent.get("#{uri.scheme}://#{uri.host}/login")
-        login_form = page.forms.with.name('loginForm').first
+        login_form = page.form('loginForm')
         login_form.username = @opt[:you_tube_username]
         login_form.password = @opt[:you_tube_password]
         agent.submit(login_form)
