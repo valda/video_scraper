@@ -7,7 +7,6 @@ module WWW
     class AgeSage < Base
       url_regex %r!\Ahttp://adult\.agesage\.jp/contentsPage\.html\?mcd=[[:alnum:]]{16}!
 
-      private
       def scrape
         @request_url = @page_url.sub('.html', '.xml')
         @response_body = http_get(@request_url)

@@ -7,20 +7,6 @@ module WWW
     class RedTube < Base
       url_regex %r|\Ahttp://www\.redtube\.com/(\d{4})|
 
-      def embed_tag
-        return @embed_tag if @embed_tag
-        url = "http://www.redtube.com/embed/#{content_id}"
-        response_body = http_get(url)
-        doc = Hpricot(response_body)
-        doc.search('//textarea#cpf') do |elem|
-          @embed_tag = elem.inner_html
-        end
-        @embed_tag
-      end
-
-      private
-      def content_id; url_regex_match[1]; end
-
       def scrape
         s = content_id || '0'
         s = '1' if s.empty?
@@ -52,6 +38,20 @@ module WWW
         @video_url = "http://dl.redtube.com/_videos_t4vn23s9jc5498tgj49icfj4678/#{content_video}"
         # @thumb_url = "http://thumbs.redtube.com/_thumbs/#{pathnr}/#{s}/#{s}_#{'%03d' % i}.jpg"
       end
+
+      def embed_tag
+        return @embed_tag if @embed_tag
+        url = "http://www.redtube.com/embed/#{content_id}"
+        response_body = http_get(url)
+        doc = Hpricot(response_body)
+        doc.search('//textarea#cpf') do |elem|
+          @embed_tag = elem.inner_html
+        end
+        @embed_tag
+      end
+
+      private
+      def content_id; url_regex_match[1]; end
     end
   end
 end

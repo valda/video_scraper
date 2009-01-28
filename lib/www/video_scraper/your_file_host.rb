@@ -18,7 +18,6 @@ module WWW
       end
       alias :title :filename
 
-      private
       def scrape
         html = http_get(@page_url)
         doc = Hpricot(html.toutf8)

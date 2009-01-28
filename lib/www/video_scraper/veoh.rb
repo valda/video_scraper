@@ -7,7 +7,6 @@ module WWW
     class Veoh < Base
       url_regex %r!\Ahttp://www\.veoh\.com/videos/([[:alnum:]]+)!
 
-      private
       def scrape
         @id = url_regex_match[1]
         request_url = "http://www.veoh.com/rest/video/#{@id}/details"

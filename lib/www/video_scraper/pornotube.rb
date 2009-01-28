@@ -7,16 +7,6 @@ module WWW
     class Pornotube < Base
       url_regex %r!\Ahttp://(?:www\.)?pornotube\.com/(?:media|channels)\.php\?.*m=(\d+)!
 
-      private
-      def login
-        agent.post("http://pornotube.com/index.php",
-                   'verifyAge' => 'true',
-                   'bMonth' => '01',
-                   'bDay' => '01',
-                   'bYear' => '1970',
-                   'submit' => 'View All Content')
-      end
-
       def scrape
         id = url_regex_match[1]
 
@@ -31,6 +21,16 @@ module WWW
         @thumb_url = "http://photo.pornotube.com/thumbnails/video/#{q['userId'][0]}/#{q['mediaId'][0]}.jpg";
         @image_url = "http://photo.pornotube.com/thumbnails/video/#{q['userId'][0]}/#{q['mediaId'][0]}_full.jpg";
         @embed_tag = q['embedCode'][0]
+      end
+
+      private
+      def login
+        agent.post("http://pornotube.com/index.php",
+                   'verifyAge' => 'true',
+                   'bMonth' => '01',
+                   'bDay' => '01',
+                   'bYear' => '1970',
+                   'submit' => 'View All Content')
       end
     end
   end

@@ -7,7 +7,6 @@ module WWW
     class AdultSatellites < Base
       url_regex %r!http://(?:www\.)?asa\.tv/movie_detail\.php.*!
 
-      private
       def scrape
         html = http_get(@page_url)
         doc = Hpricot(html.toutf8)

@@ -7,7 +7,6 @@ module WWW
     class YouPorn < Base
       url_regex %r!\Ahttp://youporn\.com/watch/(\d+)!
 
-      private
       def scrape
         id = url_regex_match[1]
 

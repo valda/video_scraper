@@ -49,20 +49,22 @@ module WWW
         yield @@options
       end
 
+      def find_module(url)
+        @@modules.find { |mod| mod.valid_url?(url) }
+      end
+
       # 与えられた URL を処理できるモジュールを @@modules から検索して実行する
       def scrape(url, opt = nil)
         opt = @@options.merge(opt || {})
         opt[:logger] ||= logger
         raise StandardError, "url param is requred" unless url
 
-        @@modules.each do |scraper|
-          if scraper.valid_url?(url)
-            logger.info "scraper: #{scraper.to_s}"
-            logger.info "url: #{url}"
-            return scraper.new(url, opt)
-          end
+        logger.info "url: #{url}"
+        if mod = find_module(url)
+          logger.info "found module: #{mod.to_s}"
+          return mod.scrape(url, opt)
         end
-        logger.info "unsupport site."
+        logger.info "unsupport url."
         return nil
       rescue TimeoutError, Timeout::Error, Errno::ETIMEDOUT => e
         logger.warn "  Timeout : #{e.to_s}"
