@@ -22,11 +22,11 @@ class TestYouTube < Test::Unit::TestCase
   end
 
   def test_scrape_alt_url
-    vs = WWW::VideoScraper::YouTube.scrape('http://jp.youtube.com/watch?v=ibhaQZB9TWU', default_opt)
-    assert_equal 'http://jp.youtube.com/watch?v=ibhaQZB9TWU', vs.page_url
-    assert_match %r|http://jp\.youtube\.com/get_video\?video_id=ibhaQZB9TWU&t=[-_[:alnum:]]{32}|, vs.video_url
-    assert_match %r|http://\w\.ytimg\.com/vi/ibhaQZB9TWU/default\.jpg|, vs.thumb_url
+    vs = WWW::VideoScraper::YouTube.scrape('http://jp.youtube.com/watch?v=ATHC8qDkoO0', default_opt)
+    assert_equal 'http://jp.youtube.com/watch?v=ATHC8qDkoO0', vs.page_url
+    assert_match %r|http://jp\.youtube\.com/get_video\?video_id=ATHC8qDkoO0&t=[-_[:alnum:]]{32}|, vs.video_url
+    assert_match %r|http://\w\.ytimg\.com/vi/ATHC8qDkoO0/default\.jpg|, vs.thumb_url
     assert_match %r|^<object\s+.*</object>$|, vs.embed_tag
-    assert_equal '水着の人妻', vs.title
+    assert_equal "019' Sexii_Shower 藤澤まお_洗白白", vs.title
   end
 end
