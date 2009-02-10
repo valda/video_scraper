@@ -35,7 +35,7 @@ class TestVideoScraper < Test::Unit::TestCase
 
   def test_scrape
     vs = WWW::VideoScraper.scrape('http://www.yourfilehost.com/media.php?cat=video&file=XV436__03.wmv')
-    assert_kind_of WWW::VideoScraper::Yourfilehost, vs
+    assert_kind_of WWW::VideoScraper::YourFileHost, vs
   end
 end
 

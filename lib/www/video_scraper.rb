@@ -15,10 +15,10 @@ end
 
 module WWW
   module VideoScraper
-    VERSION = '1.0.3'
+    VERSION = '1.0.4'
 
-    MODULES_NAME = %w(adult_satellites age_sage ameba_vision dailymotion moro_tube
-                      nico_video pornhub pornotube red_tube tube8 veoh
+    MODULES_NAME = %w(adult_satellites age_sage ameba_vision dailymotion eic_book
+                      moro_tube nico_video pornhub pornotube red_tube tube8 veoh
                       you_porn you_tube your_file_host)
 
     @@modules = MODULES_NAME.map do |name|
