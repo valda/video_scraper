@@ -77,6 +77,8 @@ module WWW
       rescue OpenURI::HTTPError => e
         raise TryAgainLater, e.to_s if e.to_s.include?('503')
         raise e
+      rescue TimeoutError, Timeout::Error, Errno::ETIMEDOUT => e
+        raise TryAgainLater, e.to_s
       end
     end
   end
