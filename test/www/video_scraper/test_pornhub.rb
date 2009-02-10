@@ -9,5 +9,6 @@ class TestPornhub < Test::Unit::TestCase
     assert_match %r|http://media1.pornhub.com/dl/[[:alnum:]]{32}/[[:alnum:]]{8}/videos/000/191/743/191743\.flv|, vs.video_url
     assert_equal 'http://p1.pornhub.com/thumbs/000/191/743/small.jpg', vs.thumb_url
     assert_match %r|^<object type=\"application/x-shockwave-flash\" data=\".*</object>$|, vs.embed_tag
+    assert_equal 'Liliane Tiger and Jane Darling to hot to handle', vs.title
   end
 end
