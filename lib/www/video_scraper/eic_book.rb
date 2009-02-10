@@ -10,7 +10,8 @@ module WWW
 
       def scrape
         uri = URI.parse(@page_url)
-        html = http_get("#{uri.scheme}://#{uri.host}#{uri.path}?flg=sm")
+        @page_url = "#{uri.scheme}://#{uri.host}#{uri.path}?flg=sm"
+        html = http_get(@page_url)
         doc = Hpricot(html.toutf8)
         raise FileNotFound unless flashvars = doc.at('//object //param[@name="FlashVars"]')
         flashvars = CGI.parse(flashvars.attributes['value'])
