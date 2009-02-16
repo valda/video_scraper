@@ -19,7 +19,7 @@ module WWW
         end
 
         def valid_url?(url)
-          not (url =~ @url_regex).nil?
+          Array(@url_regex).any? { |r| r.match(url) }
         end
 
         def scrape(url, opt = nil)
@@ -32,7 +32,10 @@ module WWW
       def initialize(url, opt = nil)
         @page_url = url
         @opt = (opt || {})
-        @url_regex_match = self.class.instance_variable_get(:@url_regex).match(@page_url).freeze
+        url_regex = self.class.instance_variable_get(:@url_regex)
+        Array(url_regex).any? do |r|
+          @url_regex_match = r.match(@page_url).freeze
+        end
         raise StandardError, "url is not #{self.class.name} link: #{url}" if @url_regex_match.nil?
       end
 
