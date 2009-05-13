@@ -15,11 +15,11 @@ module WWW
         doc = Hpricot(html)
         doc.search('//div[@id="download"]//a').each do |elem|
           href = elem.attributes['href']
-          (@video_url = href; break) if href =~ %r!^http://download\.youporn\.com/download/.*\.flv!
+          (@video_url = href; break) if href =~ %r!^http://download\.youporn\.com/download/.*!
         end
         h1 = doc.at('//div[@id="videoArea"]/h1')
         @title = h1.inner_html.gsub(/<[^>]*>/, '').strip
-        @thumb_url = h1.at('/img').attributes['src'].sub(/(\d+)_small\.jpg$/, '\1_large.jpg')
+        @thumb_url = h1.at('/img').attributes['src'].sub(/(\d+)_small\.jpg$/, '\1_large.jpg') if h1.at('/img') != nil
       end
     end
   end
