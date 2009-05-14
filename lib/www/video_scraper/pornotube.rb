@@ -14,7 +14,9 @@ module WWW
         page = agent.get(@page_url)
         raise FileNotFound unless embed = page.root.at('//object/embed')
         src = embed.attributes['src']
-        hash = src.match(/\?v=(.*)$/)[1]
+        hash = src.to_s.match(/\?v=(.*)$/)[1]
+        t = page.at('//div[@class="contentheader"]//span[@class="blue"]')
+        @title = t.inner_html.gsub(/<[^>]*>/, '').strip
         page = agent.get("http://pornotube.com/player/player.php?#{hash}")
         q = CGI::parse(page.body)
         @video_url = "http://#{q['mediaDomain'][0]}.pornotube.com/#{q['userId'][0]}/#{q['mediaId'][0]}.flv"
