@@ -5,7 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + '/base')
 module WWW
   module VideoScraper
     class YouPorn < Base
-      url_regex %r!\Ahttp://youporn\.com/watch/(\d+)!
+      url_regex %r!\Ahttp://(?:www\.)?youporn\.com/watch/(\d+)!
 
       def scrape
         id = url_regex_match[1]
