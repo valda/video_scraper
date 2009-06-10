@@ -15,7 +15,7 @@ end
 
 module WWW
   module VideoScraper
-    VERSION = '1.0.4'
+    VERSION = '1.0.5'
 
     MODULES_NAME = %w(adult_satellites age_sage ameba_vision dailymotion eic_book
                       moro_tube nico_video pornhub pornotube red_tube tube8 veoh
