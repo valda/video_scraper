@@ -64,6 +64,13 @@ module WWW
         nil
       end
 
+      def title
+        return @title if @title
+        html = http_get(@page_url)
+        doc = Hpricot(html.toutf8)
+        @title = doc.at("//table/tr[2]/td/table/tr[3]/td/table/tr/td").inner_html.gsub(/<[^>]*>/, '').strip
+      end
+      
       def embed_tag
         return @embed_tag if @embed_tag
         url = "http://www.redtube.com/embed/#{content_id}"
